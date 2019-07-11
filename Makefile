@@ -183,6 +183,9 @@ SHIMV2 = containerd-shim-kata-v2
 SHIMV2_OUTPUT = $(CURDIR)/$(SHIMV2)
 SHIMV2_DIR = $(CLI_DIR)/$(SHIMV2)
 
+CRIO_PLUGIN_DIR = $(CURDIR)/crio-shimv2
+CRIO_SHIMV2_PLUGIN = $(CRIO_PLUGIN_DIR)/runtime_vm.so
+
 SOURCES := $(shell find . 2>&1 | grep -E '.*\.(c|h|go)$$')
 VERSION := ${shell cat ./VERSION}
 
@@ -413,6 +416,8 @@ all: runtime containerd-shim-v2 netmon
 containerd-shim-v2: $(SHIMV2_OUTPUT)
 
 netmon: $(NETMON_TARGET_OUTPUT)
+
+crio-plugin: $(CRIO_PLUGIN_DIR)
 
 $(NETMON_TARGET_OUTPUT): $(SOURCES) VERSION
 	$(QUIET_BUILD)(cd $(NETMON_DIR) && go build $(BUILDFLAGS) -o $@ -ldflags "-X main.version=$(VERSION)")
